@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package api_telegram;
 /**
  *
  * @author bonuglia_gabriele
  */
 public class Messaggio {
-     Integer message_id;
+    String message_id;
     User from;
     Integer date;
     Chat chat;
@@ -17,7 +17,7 @@ public class Messaggio {
 
     public Messaggio(){}
     
-    public Messaggio(Integer message_id, User from, Integer date, Chat chat, String text) {
+    public Messaggio(String message_id, User from, Integer date, Chat chat, String text) {
         this.message_id = message_id;
         this.from = from;
         this.date = date;
@@ -25,11 +25,11 @@ public class Messaggio {
         this.text = text;
     }
 
-    public Integer getMessage_id() {
+    public String getMessage_id() {
         return message_id;
     }
 
-    public void setMessage_id(Integer message_id) {
+    public void setMessage_id(String message_id) {
         this.message_id = message_id;
     }
 

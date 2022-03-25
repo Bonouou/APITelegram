@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package api_telegram;
 /**
  *
  * @author bonuglia_gabriele
  */
 public class Chat {
-    Integer id;
+    String id;
     String type, first_name;
 
-    public Chat(Integer id, String type, String first_name) {
+    public Chat(String id, String type, String first_name) {
         this.id = id;
         this.type = type;
         this.first_name = first_name;
@@ -25,11 +25,11 @@ public class Chat {
         return s;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

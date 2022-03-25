@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package api_telegram;
 /**
  *
  * @author bonuglia_gabriele
  */
 public class User {
-             Integer id;
+             String id;
     Boolean is_bot, can_join_groups, can_read_all_group_messages, supports_inline_queries;
     String first_name, last_name, username, language_code;
     
      public User(){}
     
-    public User(Integer id, Boolean is_bot, Boolean can_join_groups, Boolean can_read_all_group_messages, Boolean supports_inline_queries, String first_name, String last_name, String username, String language_code) {
+    public User(String id, Boolean is_bot, Boolean can_join_groups, Boolean can_read_all_group_messages, Boolean supports_inline_queries, String first_name, String last_name, String username, String language_code) {
         this.id = id;
         this.is_bot = is_bot;
         this.can_join_groups = can_join_groups;
@@ -27,11 +27,11 @@ public class User {
         this.language_code = language_code;
     }
     
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

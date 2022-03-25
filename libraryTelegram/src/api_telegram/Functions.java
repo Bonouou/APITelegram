@@ -3,17 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package api_telegram;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,11 +40,11 @@ public class Functions {
     {
     User user = new User();
     
-    URL url = new URL("https://api.telegram.org/5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/getMe");
+    URL url = new URL("https://api.telegram.org/bot5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/getMe");
     String inline = readUrl(url); //get contenuto
         JSONObject obj = new JSONObject(inline); //lo trasformo in JSONObject
         JSONObject res = (JSONObject) obj.get("result"); //prendo l'oggetto result
-      Integer id = res.getInt("id");
+      String id = res.get("id").toString();
         Boolean is_bot = res.getBoolean("is_bot");
         //Opzionali
         Boolean can_join_groups = null;
@@ -70,7 +81,7 @@ public class Functions {
      
      public Vector<Update> getUpdates() throws MalformedURLException, IOException{
          Vector<Update> ArrayUpdates = new Vector<Update>();
-            URL url = new URL("https://api.telegram.org/5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/getUpdates");
+            URL url = new URL("https://api.telegram.org/bot5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/getUpdates");
           String inline = readUrl(url);
         JSONObject obj = new JSONObject(inline);
         JSONArray res = (JSONArray) obj.get("result"); //prendo array result
@@ -83,14 +94,14 @@ public class Functions {
             
             //Oggetto messagge
             JSONObject objMess = (JSONObject) obj2.get("message"); //JSONObject messagge
-            Integer message_id = objMess.getInt("message_id");
+            String message_id = objMess.get("message_id").toString();
             Integer date = objMess.getInt("date");
             String text = objMess.getString("text");
 
             //Oggetto from 
             JSONObject Objfrom = (JSONObject) objMess.get("from"); //JSONObject from
             String first_name = Objfrom.getString("first_name");
-            Integer id = Objfrom.getInt("id");
+            String id = Objfrom.get("id").toString();
             Boolean is_bot = Objfrom.getBoolean("is_bot");
             //Opzionali
             Boolean can_join_groups = null;
@@ -122,7 +133,7 @@ public class Functions {
 
             //Oggetto Chat che andrà dentro Message
             JSONObject objChat = (JSONObject) objMess.get("chat"); //prendo l'oggetto chat da Message
-            Integer idchat = objChat.getInt("id");
+            String idchat = objChat.get("id").toString();
             
             String first_nameChat = "NULL";
             if(objChat.has("first_name")) //attributo opzionale 
@@ -142,18 +153,18 @@ public class Functions {
      
     public Messaggio sendMessage(String chat_id,String testo) throws MalformedURLException, IOException{
         Messaggio mess = new Messaggio();
-    URL url = new URL("https://api.telegram.org/5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/sendMessage?chat_id=" + chat_id + "&text=" + testo);
+    URL url = new URL("https://api.telegram.org/bot5162106433:AAEb-qfASfYxa3c4jhLmDOztTVIYG-L-jR8/sendMessage?chat_id=" + chat_id + "&text=" + testo);
     String inline = readUrl(url);
         
         //Using the JSON simple library parse the string into a json object
         JSONObject obj = new JSONObject(inline);
         JSONObject res = (JSONObject) obj.get("result"); //prendo l'object JSON result
         
-        Integer message_id = res.getInt("message_id"); // input message_id
+        String message_id = res.get("message_id").toString(); // input message_id
         
         JSONObject objJsonFrom = (JSONObject) res.get("from"); //prendo l'object JSON 'from' da result
         String first_name = objJsonFrom.getString("first_name");
-        Integer id = objJsonFrom.getInt("id");
+        String id = objJsonFrom.get("id").toString();
         Boolean is_bot = objJsonFrom.getBoolean("is_bot");
         // Opzionali
         Boolean can_join_groups = null;
@@ -194,7 +205,7 @@ public class Functions {
         Integer date = res.getInt("date");
         String text = res.get("text").toString();
         
-        Chat chat = new Chat(id, type, first_name);
+        Chat chat = new Chat(idChat, type, first_name);
         
         mess = new Messaggio(message_id, from, date, chat, text);
     return mess;
@@ -211,5 +222,73 @@ public class Functions {
         //Close the scanner
         scanner.close();
         return inline;
+    }
+        
+    public void SaveCsv(File f, String idChat, String first_name, String lat, String lon)
+    {
+        List<Csv> list = ReadCsv(f); //carico in una lista tutti i record
+        FileWriter fw;
+        int indice = -1;
+        try {
+            for(int i = 0; i < list.size(); i++)
+            {
+                if(list.get(i).getfirstName().equals(first_name)) //se l'utente esiste già
+                {
+                    indice = i; //salvo l'indice
+                    break;
+                }
+            }
+            if(indice != -1) //se l'utente esiste già
+            {
+                //setto le nuove coordinate
+                list.get(indice).setLat(lat);
+                list.get(indice).setLon(lon);
+            }
+            else //altrimenti creo un nuovo oggetto
+            {
+                list.add(new Csv(idChat, first_name, lat, lon));
+            }
+            
+            fw = new FileWriter(f);
+            BufferedWriter bf = new BufferedWriter(fw); 
+            for(int j = 0; j < list.size() - 1; j++)
+            {
+                bf.write(list.get(j).ToString() + "\n");
+            }
+            bf.write(list.get(list.size() - 1).ToString()); //l'ultimo non deve andare a capo
+            bf.flush();
+            bf.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Functions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public List<Csv> ReadCsv(File f)
+    {
+        List<Csv> list = new ArrayList<Csv>();
+        FileReader fr;
+        try {
+            fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = br.readLine();
+            while(linea != null)                                                                        
+            {
+                String[] d = linea.split(";"); 
+                list.add(new Csv(d[0], d[1], d[2], d[3]));
+                linea = br.readLine();
+            };
+        } catch (IOException ex) {
+            Logger.getLogger(Functions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    } 
+    public Place getCoordinate(String citta) throws MalformedURLException, UnsupportedEncodingException, IOException, ParserConfigurationException, SAXException
+    {
+        String value = URLEncoder.encode(citta, StandardCharsets.UTF_8.toString());
+        URL url = new URL("https://nominatim.openstreetmap.org/search?q=" + value + "&format=xml&addressdetails=1");
+        String result = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
+        ParseXml doc = new ParseXml();
+        Place place = doc.parseDocument(url.toString());
+        return place;
     }
 }
