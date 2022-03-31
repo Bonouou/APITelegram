@@ -1,35 +1,34 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package api_telegram;
+package library2;
+
 /**
  *
- * @author bonuglia_gabriele
+ * @author gabri
  */
 public class Messaggio {
-    String message_id;
+    Integer message_id;
     User from;
     Integer date;
     Chat chat;
     String text;
-
-    public Messaggio(){}
-    
-    public Messaggio(String message_id, User from, Integer date, Chat chat, String text) {
+    public Messaggio(Integer message_id, User from, Integer date, Chat chat, String text) {
         this.message_id = message_id;
         this.from = from;
         this.date = date;
         this.chat = chat;
         this.text = text;
     }
-
-    public String getMessage_id() {
+    public Messaggio(){
+    
+    }
+    public Integer getMessage_id() {
         return message_id;
     }
 
-    public void setMessage_id(String message_id) {
+    public void setMessage_id(Integer message_id) {
         this.message_id = message_id;
     }
 
@@ -64,11 +63,10 @@ public class Messaggio {
     public void setText(String text) {
         this.text = text;
     }
-    
-    public String ToString()
-    {
-        String s = "";
-        s = "\nMESSAGE: \nmessage_id: " + message_id + from.ToString() + "\ndate: " + date + chat.ToString() + "\ntext: " + text;
-        return s;
+
+    @Override
+    public String toString() {
+        return "Messaggio{" + "message_id=" + message_id + ", from=" + from + ", date=" + date + ", chat=" + chat + ", text=" + text + '}';
     }
+    
 }

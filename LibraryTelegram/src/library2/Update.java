@@ -1,31 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package api_telegram;
+package library2;
+
 /**
  *
- * @author bonuglia_gabriele
+ * @author gabri
  */
 public class Update {
     Integer update_id;
     Messaggio message;
 
-    public Update() {}
+   
 
     public Update(Integer update_id, Messaggio message) {
         this.update_id = update_id;
         this.message = message;
     }
     
-    public String ToString()
-    {
-        String s = "";
-        s = "\nupdate_id: " + update_id + message.ToString();
-        return s;
-    }
-
     public Integer getUpdate_id() {
         return update_id;
     }
@@ -40,5 +33,10 @@ public class Update {
 
     public void setMessage(Messaggio message) {
         this.message = message;
+    }
+
+     @Override
+    public String toString() {
+        return "Update{" + "update_id=" + update_id + ", message=" + message + '}';
     }
 }

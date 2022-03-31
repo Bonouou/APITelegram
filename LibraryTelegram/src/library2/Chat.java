@@ -1,28 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package api_telegram;
+package library2;
+
 /**
  *
- * @author bonuglia_gabriele
+ * @author gabri
  */
 public class Chat {
-    String id;
-    String type, first_name;
-
+        String id;
+        String type, first_name;
     public Chat(String id, String type, String first_name) {
         this.id = id;
         this.type = type;
         this.first_name = first_name;
-    }
-    
-    public String ToString()
-    {
-        String s = "";
-        s = "\nCHAT: \nid: " + id + "\ntype: " + type + "\nfirst_name: " + first_name;
-        return s;
     }
 
     public String getId() {
@@ -48,4 +40,10 @@ public class Chat {
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
     }
+
+    @Override
+    public String toString() {
+        return "Chat{" + "id=" + id + ", type=" + type + ", first_name=" + first_name + '}';
+    }
+    
 }

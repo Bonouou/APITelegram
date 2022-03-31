@@ -4,20 +4,24 @@
  * and open the template in the editor.
  */
 package interfacetelegrambot;
+
+
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Scanner;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
-import org.json.*;
 import org.xml.sax.SAXException;
-import libraryTelegram.Csv;
-import libraryTelegram.Functions;
-import libraryTelegram.Message;
-import libraryTelegram.Update;
-import libraryTelegram.User;
-import libraryTelegram.parseXml;
-import libraryTelegram.test;
+import api_telegram.Csv;
+import api_telegram.Functions;
+import api_telegram.Messaggio;
+import api_telegram.Update;
+import api_telegram.User;
+import api_telegram.ParseXml;
+import api_telegram.Place;
+
+        
 /**
  *
  * @author bonuglia_gabriele
@@ -27,7 +31,7 @@ public class InterfaceTelegramBot {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
         Functions f = new Functions();
         Csv newCsv = new Csv();
@@ -62,7 +66,7 @@ public class InterfaceTelegramBot {
                     String text = myObj.nextLine();
                     System.out.println("");
                     
-                    Message mess = f.sendMessage(idChat,text);
+                    Messaggio mess = f.sendMessage(idChat,text);
                     System.out.println(mess.ToString()); 
                     break;
                 case "4":
@@ -91,5 +95,5 @@ public class InterfaceTelegramBot {
         while(!scelta.equals("-1"));
     }
     }
-    
-}
+        
+
