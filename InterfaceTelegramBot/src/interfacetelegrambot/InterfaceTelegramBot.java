@@ -13,13 +13,14 @@ import java.util.Scanner;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import api_telegram.Csv;
-import api_telegram.Functions;
-import api_telegram.Messaggio;
-import api_telegram.Update;
-import api_telegram.User;
-import api_telegram.ParseXml;
-import api_telegram.Place;
+import library2.CsvRecord;
+import library2.DatiCondivisi;
+import library2.Messaggio;
+import library2.Update;
+import library2.User;
+import library2.DocumentoXML;
+import library2.Coordinate;
+import library2.Chat;
 
         
 /**
@@ -33,8 +34,8 @@ public class InterfaceTelegramBot {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Functions f = new Functions();
-        Csv newCsv = new Csv();
+        DatiCondivisi dati = new DatiCondivisi();
+        CsvRecord newCsv = new CsvRecord();
         String scelta = "0";
         do
         {
@@ -47,14 +48,14 @@ public class InterfaceTelegramBot {
             switch(scelta)
             {
                 case "1":
-                    User user = f.getMe();
-                    System.out.println(user.ToString());
+                    User user = dati.getMe();
+                    System.out.println(user.toString());
                     break;
                 case "2":
-                    Vector<Update> ArrayUpdates = f.getUpdates();
+                    Vector<Update> ArrayUpdates = dati.getUpdates();
                     for(Update element:ArrayUpdates)
                     {
-                        System.out.println(element.ToString());
+                        System.out.println(element.toString());
                     }
                     break;
                 case "3":
@@ -66,27 +67,27 @@ public class InterfaceTelegramBot {
                     String text = myObj.nextLine();
                     System.out.println("");
                     
-                    Messaggio mess = f.sendMessage(idChat,text);
-                    System.out.println(mess.ToString()); 
+                    Messaggio mess = dati.mandaMessaggio(idChat,text);
+                    System.out.println(mess.toString()); 
                     break;
                 case "4":
-                    Vector<Update> ArrayMsg = f.getUpdates();
+                    Vector<Update> ArrayMsg = dati.getUpdates();
                     for(Update msgs:ArrayMsg)
                     {
                         //System.out.println(msgs.ToString());
                         String testo = msgs.getMessage().getText();
-                        Integer idChat2 = msgs.getMessage().getChat().getId();
+                        //Integer idChat2 = msgs.getMessage().getChat().getId();
                         String nome = msgs.getMessage().getChat().getFirst_name();
                         String coord = "";
                         if(testo.contains("/citta") && testo.length() > 6){
                             String citta = testo.substring(testo.indexOf(" "));
                             System.out.println(citta);
-                            coord = f.getCoordinate(citta);
+                            //coord = dati.getCoordinate(citta);
                             
                              
                         }
                         
-                        newCsv.toCsv(idChat2,nome,coord);
+                       // newCsv.toCsv(idChat2,nome,coord);
                         
                     }
                     break;
